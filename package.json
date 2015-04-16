@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-google-api-integration",
+  "version": "1.0.0",
+  "description": "Google API integration with node.js (Currently Google Calendar API) ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vasanthk/nodejs-google-api-integration.git"
+  },
+  "author": "Vasanth Krishnamoorthy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vasanthk/nodejs-google-api-integration/issues"
+  },
+  "homepage": "https://github.com/vasanthk/nodejs-google-api-integration",
+  "dependencies": {
+    "body-parser": "^1.12.2",
+    "express": "^4.12.3"
+  }
+}
