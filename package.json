@@ -18,6 +18,10 @@
   "homepage": "https://github.com/vasanthk/nodejs-google-api-integration",
   "dependencies": {
     "body-parser": "^1.12.2",
-    "express": "^4.12.3"
+    "express": "^4.12.3",
+    "fs": "0.0.2",
+    "google-auth-library": "^0.9.4",
+    "googleapis": "^2.0.2",
+    "readline": "0.0.7"
   }
 }
