@@ -129,36 +129,4 @@ function getEvents(auth) {
     });
 }
 
-/**
- * Google Calendar API - push notifications
- */
-calendar.events.watch({
-        calendarId: 'primary'
-    },
-    {
-        id: 'push-notif-vasanthvignesh@gmail.com',
-        address: 'https://gotomeeting.com/google-api/notifications',    // TODO: Modify sample URL when ready
-        type: 'web_hook'
-    }, function (err, res) {
-        console.log("err, res:", err, res);
-    }
-);
 
-/**
- * Listen to POST events received from Google API push notifications
- */
-router.route('/notifications    ')
-    // CREATE a connection to Google API
-    .post(function (req, res) {  // Accessed at POST http://localhost.com/api/notifications
-        var data = '';
-        req.on('data', function (chunk) {
-            data += chunk;
-        });
-
-        req.on('end', function () {
-            console.log('Received notification data:');
-            console.log(data.toString());
-        });
-        res.writeHead(statusCode, {'Content-Type': 'text/plain'});
-        res.end();
-    });

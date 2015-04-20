@@ -9,6 +9,7 @@ var calendar = google.calendar('v3');
 var moment = require('moment');
 
 var app = express();
+var router = express.Router();
 var googleConfig = {
     clientID: '949105085593-spfei6laj15r3o0brcqc21p8cal1sbja.apps.googleusercontent.com',
     clientSecret: 'bjWqvGZHEcB6_FxwBBdCLeYR',
@@ -52,6 +53,8 @@ app.get('/', function(req, res) {
 
                 // Send our JSON response back to the browser
                 console.log('Successfully fetched events');
+                watchCalendar();
+                listenToPushNotif();
                 res.send(events);
             }
         });
@@ -84,6 +87,48 @@ app.get('/auth', function(req, res) {
         });
     }
 });
+
+/**
+ * Google Calendar API - push notifications
+ */
+function watchCalendar() {
+    console.log('Call Calendar Watch');
+    calendar.events.watch({
+            calendarId: 'primary'
+        },
+        {
+            id: 'push-notif-vasanthvignesh@gmail.com',
+            address: 'https://gotomeeting.com/google-api/notifications',    // TODO: Modify sample URL when ready
+            type: 'web_hook'
+        }, function (err, res) {
+            console.log("err, res:", err, res);
+        }
+    );
+}
+
+
+/**
+ * Listen to POST events received from Google API push notifications
+ */
+
+function listenToPushNotif() {
+    console.log('Listen to Push Notification');
+    router.route('/notifications')
+        // CREATE a connection to Google API
+        .post(function (req, res) {  // Accessed at POST http://localhost.com/api/notifications
+            var data = '';
+            req.on('data', function (chunk) {
+                data += chunk;
+            });
+
+            req.on('end', function () {
+                console.log('Received notification data:');
+                console.log(data.toString());
+            });
+            res.writeHead(statusCode, {'Content-Type': 'text/plain'});
+            res.end();
+        });
+}
 
 var server = app.listen(PORT);
 console.log('Magic happens on port' + PORT);
