@@ -93,17 +93,18 @@ app.get('/auth', function(req, res) {
  */
 function watchCalendar() {
     console.log('Call Calendar Watch');
-    calendar.events.watch({
-            calendarId: 'primary'
-        },
-        {
-            id: 'push-notif-vasanthvignesh@gmail.com',
-            address: 'https://gotomeeting.com/google-api/notifications',    // TODO: Modify sample URL when ready
-            type: 'web_hook'
-        }, function (err, res) {
-            console.log("err, res:", err, res);
-        }
-    );
+    var pathParams = {
+        calendarId: 'primary',
+        auth: oAuthClient
+    };
+    var bodyParams = {
+        id: 'push-notif-vasanthvignesh@gmail.com',
+        address: 'https://gotomeeting.com/google-api/notifications',    // TODO: Modify sample URL when ready
+        type: 'web_hook'
+    };
+    calendar.events.watch(pathParams, bodyParams, function (err, res) {
+        console.log("err, res:", err, res);
+    });
 }
 
 
