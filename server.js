@@ -243,7 +243,8 @@ function getEvents(auth) {
         if (events.length == 0) {
             console.log('No upcoming events found.');
         } else {
-            console.log('Upcoming 2 events:');
+            //console.log(response);
+            console.log('Upcoming 10 events:');
             for (var i = 0; i < events.length; i++) {
                 var event = events[i];
                 var start = event.start.dateTime || event.start.date;
@@ -252,3 +253,44 @@ function getEvents(auth) {
         }
     });
 }
+
+/**
+ * Google Calendar API - push notifications
+ */
+calendar.events.watch({
+        calendarId: 'primary'
+    },
+    {
+        id: 'push-notif-vasanthvignesh@gmail.com',
+        address: 'https://gotomeeting.com/google-api/notifications',    // TODO: Modify sample URL when ready
+        type: 'web_hook'
+    }, function (err, res) {
+        console.log("err, res:", err, res);
+    }
+);
+
+/**
+ * Listen to POST events received from Google API push notifications
+ */
+router.route('/notifications    ')
+    // CREATE a connection to Google API
+    .post(function (req, res) {  // Accessed at POST http://localhost.com/api/notifications
+        var data = '';
+        req.on('data', function (chunk) {
+            data += chunk;
+        });
+
+        req.on('end', function () {
+            console.log('Received notification data:');
+            console.log(data.toString());
+        });
+        res.writeHead(statusCode, {'Content-Type': 'text/plain'});
+        res.end();
+    });
+
+
+// TODO: Check if oAuth can be performed on click and the response be sent to the nodejs server.
+// TODO: Perform initial full; synvc with an Ajaxy get request.
+
+// nextSyncToken (string): Token used at a later point in time to retrieve only the entries that have changed since this result was returned.
+// Omitted if further results are available, in which case nextPageToken is provided.
